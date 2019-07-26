@@ -4,7 +4,7 @@
 
 This app shows how LittlevGL (https://docs.littlevgl.com/en/html/index.html) maybe used to drive a TFT display using the mgos IoT development framework.
 
-This git repo contains submdules (lvgl and lv_examples). Therefore use the --recursive git command line option when cloing the repo. 
+This git repo contains submdules (lvgl and lv_examples). Therefore use the --recurse-submodules git command line option when cloing the repo. 
 
 ### Demo Display
 ![alt text](littlevgl_demo.jpg "Demo Display")
