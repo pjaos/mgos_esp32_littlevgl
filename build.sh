@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mos build --clean --local --verbose --platform=esp32 && w
+mos build --clean --local --verbose --platform=esp32
