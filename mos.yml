@@ -13,44 +13,84 @@ tags:
 # List of files / directories with C sources. No slashes at the end of dir names.
 sources:
   - src
+  - src/lvgl
+  - src/lvgl/src
+  - src/lvgl/src/lv_core
+  - src/lvgl/src/lv_draw
+  - src/lvgl/src/lv_font
+  - src/lvgl/src/lv_hal
+  - src/lvgl/src/lv_misc
+  - src/lvgl/src/lv_objx
+  - src/lvgl/src/lv_themes
+  - src/lv_examples/lv_apps/benchmark
+  - src/lv_examples/lv_apps/demo
+  - src/lv_examples/lv_apps/sysmon
+  - src/lv_examples/lv_apps/terminal
+  - src/lv_examples/lv_apps/tpcal
+    
+includes:
+  - src/lvgl/src/lv_core
+  - src/lvgl/src/lv_draw
+  - src/lvgl/src/lv_font
+  - src/lvgl/src/lv_hal
+  - src/lvgl/src/lv_misc
+  - src/lvgl/src/lv_objx
+  - src/lvgl/src/lv_themes
+  - src/lv_examples/lv_apps/benchmark
+  - src/lv_examples/lv_apps/demo
+  - src/lv_examples/lv_apps/sysmon
+  - src/lv_examples/lv_apps/terminal
+  - src/lv_examples/lv_apps/tpcal
 
 # List of dirs. Files from these dirs will be copied to the device filesystem
 filesystem:
   - fs
 
-# Custom configuration entries, settable via "device configuration"
-# Below is a custom firmware configuration example.
-# Uncomment and modify according to your needs:
+#Define the configuration attributes here
+config_schema:
 
-# config_schema:
-#  - ["my_app", "o", {title: "My app custom settings"}]
-#  - ["my_app.bool_value", "b", false, {title: "Some boolean value"}]
-#  - ["my_app.string_value", "s", "", {title: "Some string value"}]
-#  - ["my_app.int_value", "i", 123, {title: "Some integer value"}]
+# Display pins
+ - ["spi.enable",                      true]
+ - ["spi.cs0_gpio",                    5]      # The ILI9341 CS pin
+ - ["spi.cs1_gpio",                    27]
+ - ["spi.cs2_gpio",                    -1]
+ - ["spi.mosi_gpio",                   23]
+ - ["spi.miso_gpio",                   19]
+ - ["spi.sclk_gpio",                   18]
+ - ["ili9341.cs_index",                0]  # Use spi.cs0_gpio
+ - ["ili9341.dc_pin",                  33]
+ - ["ili9341.spi_freq",           "i", 80000000,  {title: "The SPI clock speed in Hz"}]
+ - ["ili9341.led_pin",            "i", 17,        {title: "The GPIO pin used to turn the display LED on."}]
+ - ["ili9341.rst_pin",            "i", 16,        {title: "The GPIO pin used to reset the display."}]
 
-# These settings get compiled into the C structure, and can be accessed
-# from the C code this way:
-#
-# printf("Hello from %s!\n", mgos_sys_config_get_device_id());
-#
-# Settings are cool: can be modified remotely without full firmware upgrade!
-#
-# To see all available compiled settings, buid the firmware and open
-# build/gen/mgos_config.h file.
-#
-# Also, in this config_schema section, you can override existing
-# settings that has been created by other libraries. For example, debug log
-# level is 2 by default. For this firmware we can override it to 3:
-#
-# config_schema:
-#  - ["debug.level", 3]
+# Touch screen attached to the display
+ - ["ads7843.cs_index",           "i", 1,         {title: "spi.cs*_gpio index, 0, 1 or 2"}] # This defines the SPI CS line to use (0, 1 or 2)
+ - ["ads7843.irq_pin",            "i", 25,        {title: "IRQ pin (taken low when the display is touched.)"}]
+ - ["ads7843.min_x_adc",          "i", 7,         {title: "The min X axis ADC calibration value. Enter the value from debug output (min adc x value at screen edge)."}]
+ - ["ads7843.max_x_adc",          "i", 120,       {title: "The max X axis ADC calibration value. Enter the value from debug output (max adc x value at screen edge)."}]
+ - ["ads7843.min_y_adc",          "i", 7,         {title: "The min Y axis ADC calibration value. Enter the value from debug output (min adc y value at screen edge)."}]
+ - ["ads7843.max_y_adc",          "i", 118,       {title: "The max Y axis ADC calibration value. Enter the value from debug output (max adc y value at screen edge)."}]
 
+# List of libraries used by this app, in order of initialisation
 libs:
-  - origin: https://github.com/mongoose-os-libs/boards
   - origin: https://github.com/mongoose-os-libs/ca-bundle
+  - origin: https://github.com/mongoose-os-libs/http-server
+  - origin: https://github.com/mongoose-os-libs/rpc-common
   - origin: https://github.com/mongoose-os-libs/rpc-service-config
   - origin: https://github.com/mongoose-os-libs/rpc-service-fs
   - origin: https://github.com/mongoose-os-libs/rpc-uart
+  - origin: https://github.com/mongoose-os-libs/wifi
+  - origin: https://github.com/mongoose-os-libs/adc
+  - origin: https://github.com/mongoose-os-libs/i2c
+  - origin: https://github.com/mongoose-os-libs/ota-common
+  - origin: https://github.com/mongoose-os-libs/ota-http-server
+  - origin: git@github.com:pjaos/ili9341-spi
+  - origin: git@github.com:pjaos/ads7843-spi.git
+
+cdefs:
+  MG_ENABLE_DNS: 1
+  MG_ENABLE_DNS_SERVER: 1
+  MGOS_ENABLE_I2C_GPIO: 1
 
 # Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-09-29
