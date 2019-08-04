@@ -6,7 +6,7 @@ This app shows how LittlevGL (https://docs.littlevgl.com/en/html/index.html) may
 
 This git repo contains submdules (lvgl and lv_examples). Therefore use the --recurse-submodules git command line option when cloning the repo.
 
-Before compiling the code (running build.sh you'll need to install the mos tool as detaile at https://mongoose-os.com/docs/mongoose-os/quickstart/setup.md.
+Before compiling the code (running build.sh) you'll need to install the mos tool as detaile at https://mongoose-os.com/docs/mongoose-os/quickstart/setup.md.
 
 ### Demos
 These are the LittlevGL demo screens  
